@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class MonologTrigger : MonoBehaviour
 {
+    public Dialog dialog;
     public bool isLastDialog;
-    public SubDialog subDialog;
 }

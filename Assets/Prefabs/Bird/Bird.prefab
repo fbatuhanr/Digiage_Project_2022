@@ -645,6 +645,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animator: {fileID: 8977866118445349705}
   fly: 1401586611
+  birdModel: {fileID: 0}
+  targetPoints: []
+  featherExplosion: {fileID: 0}
+  moveDuration: 0
+  rotateDuration: 0
+  moveEaseType: 0
+  rotateEaseType: 0
 --- !u!1 &8914861154663526096
 GameObject:
   m_ObjectHideFlags: 0

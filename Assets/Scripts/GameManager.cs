@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    public SoliloquizeDialog soliloquizeDialogData;
+    public bool isCinematic;
 
     private void Start()
     {

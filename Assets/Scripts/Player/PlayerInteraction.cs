@@ -49,15 +49,17 @@ public class PlayerInteraction : MonoBehaviour
         }
         else if (other.TryGetComponent(out MonologTrigger monologTrigger))
         {
-            _currentSubDialog = monologTrigger.subDialog;
-            ActivateDialog();
-
-            if (monologTrigger.isLastDialog)
+            if (monologTrigger.dialog)
             {
-                Invoke(nameof(DeactivateDialog), monologDuration);
+                _currentSubDialog = monologTrigger.dialog.firstSubDialog;
+                ActivateDialog();
             }
-
-            Destroy(other.gameObject);
+            else
+            {
+                NextDialog();
+            }
+            //if (monologTrigger.isLastDialog)
+            Invoke(nameof(DeactivateDialog), monologDuration);
         }
         else if (other.TryGetComponent(out BirdController birdController))
         {

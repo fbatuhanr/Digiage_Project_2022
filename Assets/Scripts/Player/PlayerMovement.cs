@@ -49,41 +49,9 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void Update()
-    {/*
-        // HandleMovement();
-        if (!_isJumped)
-        {
-            //HandleMovementAnimationByVelocity();
-            //HandleRotation();
-        }
-        else if (!_isFalling)
-        {
-            if (_rigidbody.velocity.y < 0)
-            {
-                playerAnimation.SetAnim(playerAnimation.fallingIdle);
-                _isFalling = true;
-            }
-        }
-        
-        if (IsOnTheGround() && !_isOnGround)
-        {
-            if (!_isJumped)
-            {
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    _rigidbody.velocity += jumpForce * Vector3.up;
-                    playerAnimation.SetAnim(playerAnimation.jumpingUp);
-                
-                    _isOnGround = false;
-                    _isJumped = true;
-                }
-            }
-
-
-            playerAnimation.SetAnim(playerAnimation.fallingIdle, false);
-
-            _isOnGround = true;
-        }*/
+    {
+        if (GameManager.Instance.isCinematic) return;
+        if (_isPlayerLocked) return;
         
         if (IsOnTheGround())
         {

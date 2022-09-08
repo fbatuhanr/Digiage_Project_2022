@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
 {
-    [SerializeField] private Animator _animator;
+    public Animator _animator;
 
     [AnimatorParam("_animator")]
     public int running, fallingDown, fallingToLanding, fallingIdle, jumpingUp, sadWalk, textingWhileStanding, yelling, wipingSweat, shrugging, laughing, standUp, pushing, disappointed, walking;
@@ -14,6 +14,11 @@ public class PlayerAnimation : MonoBehaviour
         if(returnToBaseBeforeStart) ReturnBaseAnim();
         
         _animator.SetBool(anim, value);
+    }
+
+    public void SetAnimTrigger(int anim)
+    {
+        _animator.SetTrigger(anim);
     }
 
     public void ReturnBaseAnim()

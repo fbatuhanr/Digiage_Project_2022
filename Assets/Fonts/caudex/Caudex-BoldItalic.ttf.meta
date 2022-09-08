@@ -1,0 +1,24 @@
+fileFormatVersion: 2
+guid: 0f49d77ca4bb3bb4db18f36cb0821966
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Caudex
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 81825449e44f1064f8d4d8297bed1280, type: 3}
+  - {fileID: 12800000, guid: a0d4ab3fd9dff614f907cd8af8916492, type: 3}
+  - {fileID: 12800000, guid: 60183cacd80d912419b9aaa6066e850a, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

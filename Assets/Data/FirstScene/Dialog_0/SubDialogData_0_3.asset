@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63b000e81aaa47a690c4107632d12d96, type: 3}
+  m_Name: SubDialogData_0_3
+  m_EditorClassIdentifier: 
+  firstSpeaker: 0
+  firstSentence: "\u0130CADIMIZ \xC7ALI\u015EIYOR VE  \u0130LK ZAMAN YOLCUSU BEN\u0130M
+    SEV\u0130NEM\u0130YORUM B\u0130LE "
+  answers: []
+  actions: []
+  nextDialogs:
+  - {fileID: 11400000, guid: b0adc0696722afd4ab55b8c0001221cb, type: 2}
