@@ -25,9 +25,7 @@ public class BirdController : MonoBehaviour
     {
         _animator.SetTrigger(fly);
 
-        foreach (var target in targetPoints) 
-            _mySequence
-                .Append(birdModel.transform.DOMove(target.position, moveDuration).SetEase(moveEaseType))
-                .Join(birdModel.transform.DORotate(target.eulerAngles, rotateDuration).SetEase(rotateEaseType));
+        foreach (var target in targetPoints)
+            _mySequence.Append(birdModel.transform.DOMove(target.position, moveDuration).SetEase(moveEaseType));
     }
 }
