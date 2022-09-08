@@ -1,0 +1,54 @@
+# 
+# Wavefront material file
+# Converted by the DEEP Exploration  Deep Exploration 6.5 6.5.0.9181
+# Right Hemisphere, LTD
+# http://www.righthemisphere.com/
+# 
+
+newmtl INTERIOR
+Ka 0 0 0
+Kd 1 1 1
+Ks 0.74902 0.74902 0.74902
+illum 2
+Ns 8
+map_Kd MEDIOCANAL1.jpg
+map_bump MEDIOCANAL1_BUMP.jpg
+bump MEDIOCANAL1_BUMP.jpg
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl EXTERIOR
+Ka 0 0 0
+Kd 1 1 1
+Ks 0.611765 0.611765 0.611765
+illum 2
+Ns 8
+map_Kd MEDIOCANAL2.jpg
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
+
+newmtl Explorer_Default
+Ka 0.117647 0.117647 0.117647
+Kd 0.752941 0.752941 0.752941
+Ks 0.752941 0.752941 0.752941
+illum 2
+Ns 8
+map_Kd 
+map_bump 
+bump 
+map_opacity 
+map_d 
+refl 
+map_kS 
+map_kA 
+map_Ns 
