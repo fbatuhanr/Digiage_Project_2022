@@ -1,5 +1,9 @@
 ﻿using System;
+using Unity.VisualScripting;
+using UnityEditor.AnimatedValues;
 using UnityEngine;
+using UnityEngine.Rendering.UI;
+using UnityEngine.Rendering.VirtualTexturing;
 using UnityEngine.Serialization;
 
 public enum MovementType
@@ -18,6 +22,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float verticalSpeed;
 
     [SerializeField] private PlayerAnimation playerAnimation;
+
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private float jumpForce = 1;
+    public bool _isOnGround = false;
+    public bool _isJumped = false, _isFalling = false;
+    public float groundRayDistance;
 
     private float HorizontalInput => Input.GetAxis("Horizontal"); 
     private float VerticalInput => Input.GetAxis("Vertical"); 
@@ -39,14 +49,97 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void Update()
-    {
-        if (!_isPlayerLocked)
+    {/*
+        // HandleMovement();
+        if (!_isJumped)
         {
-            HandleMovement();
-            HandleRotation();
-            HandleMovementAnimationByVelocity();
+            //HandleMovementAnimationByVelocity();
+            //HandleRotation();
+        }
+        else if (!_isFalling)
+        {
+            if (_rigidbody.velocity.y < 0)
+            {
+                playerAnimation.SetAnim(playerAnimation.fallingIdle);
+                _isFalling = true;
+            }
+        }
+        
+        if (IsOnTheGround() && !_isOnGround)
+        {
+            if (!_isJumped)
+            {
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    _rigidbody.velocity += jumpForce * Vector3.up;
+                    playerAnimation.SetAnim(playerAnimation.jumpingUp);
+                
+                    _isOnGround = false;
+                    _isJumped = true;
+                }
+            }
+
+
+            playerAnimation.SetAnim(playerAnimation.fallingIdle, false);
+
+            _isOnGround = true;
+        }*/
+        
+        if (IsOnTheGround())
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                _rigidbody.velocity += jumpForce * Vector3.up;
+                playerAnimation.SetAnim(playerAnimation.jumpingUp);
+                _isJumped = true;
+            }
+
+            if (_isFalling)
+            {
+                Debug.Log("hit the ground when its falling");
+                playerAnimation.ReturnBaseAnim();
+
+                _isJumped = false;
+                _isFalling = false;
+            }
+            else if(!_isJumped)
+            {
+                HandleMovementAnimationByVelocity();
+            }
+        }
+        else
+        {
+            if (!_isFalling && _rigidbody.velocity.y < 0)
+            {
+                Debug.Log("velocity < 0, isFalling!");
+                playerAnimation.SetAnim(playerAnimation.fallingIdle);
+                _isFalling = true;
+            }
+        }
+        HandleMovement();
+        HandleRotation();
+    }
+
+    private bool IsOnTheGround()
+    {
+        var origin = transform.position + (Vector3.up * 0.5f);
+        var direction = transform.up * -1;
+        var distance = groundRayDistance;
+        if (Physics.Raycast(origin, direction, distance, groundLayer))
+        {
+            Debug.DrawRay(origin, direction*distance, Color.green);
+            Debug.Log("Ground true");
+            return true;
+        }
+        else
+        {
+            Debug.DrawRay(origin, direction*distance, Color.red);
+            Debug.Log("Ground false");
+            return false;
         }
     }
+    
+
     public void LockPlayer()
     {
         _rigidbody.velocity = Vector3.zero;
@@ -62,19 +155,19 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleMovement()
     {
-        _rigidbody.velocity = new Vector3(HorizontalMovement, 0, VerticalMovement);
+        _rigidbody.velocity = new Vector3(HorizontalMovement, _isJumped || _isFalling ? _rigidbody.velocity.y : 0, VerticalMovement);
     }
     private void HandleRotation()
     {
         if(AxisInputRawMagnitude > 0)
-            transform.rotation = Quaternion.LookRotation(_rigidbody.velocity)*Quaternion.Euler(0,-90f,0);
+            transform.rotation = Quaternion.LookRotation(new Vector3(_rigidbody.velocity.x, 0, _rigidbody.velocity.z))*Quaternion.Euler(0,-90f,0);
     }
 
     private void HandleMovementAnimationByVelocity()
     {
-        var currentVelocity = _rigidbody.velocity.magnitude;
-        
-        if (currentVelocity > 0)
+        /*var currentVelocity = new Vector2(_rigidbody.velocity.x, _rigidbody.velocity.z).magnitude;
+        var currentVelocity = AxisInputRawMagnitude;*/
+        if (AxisInputRawMagnitude > 0)
         {
             switch (movementType)
             {
