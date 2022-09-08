@@ -1,22 +1,29 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class PlayerInteraction : MonoBehaviour
 {
     [SerializeField] private KeyCode interactKey;
-    [SerializeField] private  PlayerDialogController playerDialogController;
+    [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private PlayerAnimation playerAnimation;
+    [SerializeField] private PlayerDialogController playerDialogController;
     [SerializeField] private SelectionsUIController selectionsUIController;
 
     [SerializeField] private UIPanelAnimationController pressKeyForInteractionPanel;
 
+    [SerializeField] private float monologDuration;
+
     private DialogTrigger _currentDialogTrigger;
     private SubDialog _currentSubDialog;
+
     private void Update()
     {
-        if (_currentDialogTrigger != null)
+        if (_currentSubDialog != null)
         {
             if (Input.GetKeyDown(interactKey))
             {
@@ -35,6 +42,26 @@ public class PlayerInteraction : MonoBehaviour
             pressKeyForInteractionPanel.Enable();
 
             ActivateDialog();
+            
+            playerAnimation.SetAnim(playerAnimation.disappointed);
+            
+            playerMovement.LockPlayer();
+        }
+        else if (other.TryGetComponent(out MonologTrigger monologTrigger))
+        {
+            _currentSubDialog = monologTrigger.subDialog;
+            ActivateDialog();
+
+            if (monologTrigger.isLastDialog)
+            {
+                Invoke(nameof(DeactivateDialog), monologDuration);
+            }
+
+            Destroy(other.gameObject);
+        }
+        else if (other.TryGetComponent(out BirdController birdController))
+        {
+            birdController.Escape();
         }
     }
     private void OnTriggerExit(Collider other)
@@ -45,12 +72,48 @@ public class PlayerInteraction : MonoBehaviour
             dialogTrigger.Deactivate();
             
             pressKeyForInteractionPanel.Disable();
+            
+            selectionsUIController.Deactivate();
+            
+            playerMovement.UnlockPlayer();
+        }
+        else if (other.TryGetComponent(out MonologTrigger monologTrigger))
+        {
+            
         }
     }
     
     private bool IsNextDialogExist => _currentSubDialog.nextDialogs.Length > 0;
     private bool IsAnswerOrActionExist => _currentSubDialog.answers.Length > 0 || _currentSubDialog.actions.Length > 0;
 
+    private void ActivateDialog()
+    {
+        if (_currentSubDialog.firstSpeaker == Speaker.Angel)
+        {
+            playerDialogController.Activate(_currentSubDialog);
+            if(_currentDialogTrigger != null) _currentDialogTrigger.Deactivate();
+        }
+        else if (_currentSubDialog.firstSpeaker == Speaker.Evil)
+        {
+            playerDialogController.Deactivate();
+            if(_currentDialogTrigger != null) _currentDialogTrigger.Activate(_currentSubDialog);
+        }
+
+        if (!IsNextDialogExist)
+        {
+            playerMovement.UnlockPlayer();
+            Invoke(nameof(DeactivateDialog), 3f);
+        }
+    }
+
+
+    private void DeactivateDialog()
+    {
+        playerDialogController.Deactivate();
+        if(_currentDialogTrigger != null) _currentDialogTrigger.Deactivate();
+    }
+    
+    
     private void NextDialog()
     {
         if (IsNextDialogExist)
@@ -58,39 +121,27 @@ public class PlayerInteraction : MonoBehaviour
             if (IsAnswerOrActionExist)
             {
                 selectionsUIController.Activate(_currentSubDialog);
+                pressKeyForInteractionPanel.Disable();
                 DeactivateDialog();
             }
             else
                 SetNewSubDialog(0);
         }
         else
-            DeactivateDialog();
+            DialogFinished();
     }
+
 
     public void SetNewSubDialog(int index)
     {
         _currentSubDialog = _currentSubDialog.nextDialogs[index];
         ActivateDialog();
     }
-
-    private void ActivateDialog()
+    
+    private void DialogFinished()
     {
-        switch (_currentSubDialog.firstSpeaker)
-        {
-            case Speaker.Angel:
-                playerDialogController.Activate(_currentSubDialog);
-                _currentDialogTrigger.Deactivate();
-                break;
-            case Speaker.Evil:
-                _currentDialogTrigger.Activate(_currentSubDialog);
-                playerDialogController.Deactivate();
-                break;
-        }
-    }
-
-    private void DeactivateDialog()
-    {
-        playerDialogController.Deactivate();
-        _currentDialogTrigger.Deactivate();
+        playerMovement.UnlockPlayer();
+        pressKeyForInteractionPanel.Disable();
+        DeactivateDialog();
     }
 }

@@ -1,20 +1,37 @@
-using System;
 using DG.Tweening;
+using NaughtyAttributes;
+using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public enum Status { Enabled, Disabled }
-public enum AnimType { PositionX, PositionY, Scale }
+public enum UIPanelStatus { Enabled, Disabled }
+public enum AnimType { PositionX, PositionY, Scale, Color }
 
 public class UIPanelAnimationController : MonoBehaviour
 {
-    [HideInInspector] public Status status;
+    [HideInInspector] public UIPanelStatus uiPanelStatus;
     [SerializeField] private RectTransform background;
+
     [SerializeField] private RectTransform enableTarget, disableTarget;
 
     [SerializeField] private AnimType animType = AnimType.Scale;
-    [SerializeField] private float durationOnEnable = .5f, durationOnDisable = .5f;
-    [SerializeField] private float delayOnEnable = 0, delayOnDisable = 0;
-    [SerializeField] private Ease easeTypeOnEnable, easeTypeOnDisable;
+
+    [ShowIf("animType", AnimType.Color)] 
+    [SerializeField] private Image targetImage;
+    [ShowIf("animType", AnimType.Color)] 
+    [SerializeField] private Color enableColor, disableColor;
+
+    [Header("Anim Durations: ")] 
+    [SerializeField] private float durationOnEnable = .5f;
+    [SerializeField] private float durationOnDisable = .5f;
+
+    [Header("Anim Delays:")] 
+    [SerializeField] private float delayOnEnable = 0;
+    [SerializeField] private float delayOnDisable = 0;
+
+    [Header("Anim Types:")] 
+    [SerializeField] private Ease easeTypeOnEnable;
+    [SerializeField] private Ease easeTypeOnDisable;
 
     private Sequence _mySequence;
 
@@ -36,9 +53,12 @@ public class UIPanelAnimationController : MonoBehaviour
             case  AnimType.Scale:
                 _mySequence.Append(background.DOScale(Vector3.one, durationOnEnable).SetEase(easeTypeOnEnable).SetDelay(delayOnEnable));
                 break;
+            case AnimType.Color:
+                _mySequence.Append(targetImage.DOColor(enableColor, durationOnEnable).SetEase(easeTypeOnEnable).SetDelay(delayOnEnable));
+                break;
         }
 
-        status = Status.Enabled;
+        uiPanelStatus = UIPanelStatus.Enabled;
     }
 
     public void Disable()
@@ -54,8 +74,11 @@ public class UIPanelAnimationController : MonoBehaviour
             case  AnimType.Scale:
                 _mySequence.Append(background.DOScale(Vector3.zero, durationOnDisable).SetEase(easeTypeOnDisable).SetDelay(delayOnDisable));
                 break;
+            case AnimType.Color:
+                _mySequence.Append(targetImage.DOColor(disableColor, durationOnEnable).SetEase(easeTypeOnEnable).SetDelay(delayOnEnable));
+                break;
         }
         
-        status = Status.Disabled;
+        uiPanelStatus = UIPanelStatus.Disabled;
     }
 }
