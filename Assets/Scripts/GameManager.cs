@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public bool isCinematic;
 
-    private void Start()
+    private void Awake()
     {
         Instance = this;
     }

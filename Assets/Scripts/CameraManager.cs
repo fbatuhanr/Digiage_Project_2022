@@ -11,10 +11,13 @@ public class CameraManager : MonoBehaviour
     
     public CinemachineVirtualCamera beginningCam, portalCam;
 
-    private void Start()
+    private void Awake()
     {
         Instance = this;
+    }
 
+    private void Start()
+    {
         BeginningPriority();
     }
 
