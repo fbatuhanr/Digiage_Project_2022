@@ -10,10 +10,13 @@ public class CavemanController : MonoBehaviour
 
     private bool isStartedToRunning;
 
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Start()
     {
-        Instance = GetComponent<CavemanController>();
-
         _animator = transform.GetChild(0).GetComponent<Animator>();
         isStartedToRunning = false;
     }

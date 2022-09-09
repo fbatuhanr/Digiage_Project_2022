@@ -13,21 +13,24 @@ public class FirstSceneFlowController : MonoBehaviour
     
     [SerializeField] private float playerFallPowerFromPortal;
     private bool _isFalledDown = false;
-    
-    private void Start()
+
+    private void Awake()
     {
         player = GameObject.FindWithTag("Player");
+    }
+
+    private void Start()
+    { 
         _playerAnimation = player.GetComponent<PlayerAnimation>();
         _playerRigidbody = player.GetComponent<Rigidbody>();
-
-      //  CameraManager.Instance.beginningCam();
         
-      CameraManager.Instance.PortalPriority();
+        CameraManager.Instance.PortalPriority();
         Invoke(nameof(StartFallingDownFromPortal), 2f);
     }
 
     public void StartFallingDownFromPortal()
     {
+        CameraManager.Instance.BeginningPriority();
         _playerRigidbody.AddForce(Vector3.back*playerFallPowerFromPortal, ForceMode.VelocityChange);
         _playerAnimation.SetAnimTrigger(_playerAnimation.fallingDown);
     }

@@ -16,11 +16,6 @@ public class CameraManager : MonoBehaviour
         Instance = this;
     }
 
-    private void Start()
-    {
-        BeginningPriority();
-    }
-
     public void BeginningPriority()
     {
         ClearPriorities();
