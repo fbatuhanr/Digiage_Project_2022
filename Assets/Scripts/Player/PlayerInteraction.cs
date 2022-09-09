@@ -40,16 +40,14 @@ public class PlayerInteraction : MonoBehaviour
             _currentSubDialog = _currentDialogTrigger.dialog.firstSubDialog;
             
             pressKeyForInteractionPanel.Enable();
-
-            ActivateDialog();
-            
-            playerAnimation.SetAnim(playerAnimation.disappointed);
             
             playerMovement.LockPlayer();
+
+            ActivateDialog();
         }
         else if (other.TryGetComponent(out MonologTrigger monologTrigger))
         {
-            if (monologTrigger.dialog)
+            /*if (monologTrigger.dialog)
             {
                 _currentSubDialog = monologTrigger.dialog.firstSubDialog;
                 ActivateDialog();
@@ -57,9 +55,10 @@ public class PlayerInteraction : MonoBehaviour
             else
             {
                 NextDialog();
-            }
-            //if (monologTrigger.isLastDialog)
-            Invoke(nameof(DeactivateDialog), monologDuration);
+            }*/
+            
+            _currentSubDialog = monologTrigger.dialog.firstSubDialog;
+            ActivateDialog();
         }
         else if (other.TryGetComponent(out BirdController birdController))
         {
@@ -86,7 +85,8 @@ public class PlayerInteraction : MonoBehaviour
     }
     
     private bool IsNextDialogExist => _currentSubDialog.nextDialogs.Length > 0;
-    private bool IsAnswerOrActionExist => _currentSubDialog.answers.Length > 0 || _currentSubDialog.actions.Length > 0;
+    private bool IsAnswerExist => _currentSubDialog.answers.Length > 0;
+    private bool IsActionExist => _currentSubDialog.actions.Length > 0;
 
     private void ActivateDialog()
     {
@@ -120,13 +120,17 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (IsNextDialogExist)
         {
-            if (IsAnswerOrActionExist)
+            if (IsAnswerExist)
             {
                 selectionsUIController.Activate(_currentSubDialog);
                 pressKeyForInteractionPanel.Disable();
                 DeactivateDialog();
             }
-            else
+            else if (IsActionExist)
+            {
+                Debug.Log("action!");
+            }
+            else 
                 SetNewSubDialog(0);
         }
         else
@@ -136,8 +140,11 @@ public class PlayerInteraction : MonoBehaviour
 
     public void SetNewSubDialog(int index)
     {
-        _currentSubDialog = _currentSubDialog.nextDialogs[index];
-        ActivateDialog();
+        if (_currentSubDialog.nextDialogs[index])
+        {
+            _currentSubDialog = _currentSubDialog.nextDialogs[index];
+            ActivateDialog();
+        }
     }
     
     private void DialogFinished()

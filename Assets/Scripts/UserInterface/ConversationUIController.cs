@@ -15,7 +15,6 @@ public class ConversationUIController : MonoBehaviour
     
     private void Start()
     {
-        //pressKeyColor = 
         pressKey.DOColor(pressKeyTargetColor, pressKeyDuration).SetLoops(-1, LoopType.Yoyo);
     }
 
@@ -24,7 +23,7 @@ public class ConversationUIController : MonoBehaviour
         transform.eulerAngles = Vector3.zero;
     }
     
-    private void Update()
+    private void FixedUpdate()
     {
         transform.eulerAngles = Vector3.zero;
     }

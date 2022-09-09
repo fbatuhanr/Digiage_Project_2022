@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 63b000e81aaa47a690c4107632d12d96, type: 3}
-  m_Name: SubDialogData_1_2
+  m_Name: SubDialogData_1_0
   m_EditorClassIdentifier: 
   firstSpeaker: 0
-  firstSentence: "SAVA\u015EMALIYIM VE GELECE\u011EE G\u0130DEREK D\xDCNYAYI KURTARMALIYIM"
+  firstSentence: "TOPRA\u011EIN(Ta\u015F\u0131n) DOKUSU \xC7OK DE\u011E\u0130\u015E\u0130K"
   answers: []
   actions: []
   nextDialogs: []
