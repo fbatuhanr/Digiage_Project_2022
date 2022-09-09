@@ -153,14 +153,14 @@ MonoBehaviour:
   FluidMeshMaterial: {fileID: 2100000, guid: 248b1858901577949a18bb8d09cb583f, type: 2}
   UpscaleMaterial: {fileID: 2100000, guid: 374557399a8cb1b499aee6a0cc226496, type: 2}
   NoOpMaterial: {fileID: 2100000, guid: 248b1858901577949a18bb8d09cb583f, type: 2}
-  Color: {r: 0.3411765, g: 0.92156863, b: 0.85236126, a: 1}
+  Color: {r: 0, g: 0.04493475, b: 1, a: 1}
   ReflectionColor: {r: 1.39772, g: 1.39772, b: 1.39772, a: 1}
   EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
   SmoothnessOld: 0.96
   Roughness: 0.04000002
-  Metalness: 0.3
+  Metalness: 0
   ScatteringAmount: 5
-  AbsorptionAmount: 20
+  AbsorptionAmount: 7
   Shadowing: 0
   IndexOfRefraction: 1.333
   FluidSurfaceBlur: 1.5
