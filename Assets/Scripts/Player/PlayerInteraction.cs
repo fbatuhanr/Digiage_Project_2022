@@ -16,8 +16,6 @@ public class PlayerInteraction : MonoBehaviour
 
     [SerializeField] private UIPanelAnimationController pressKeyForInteractionPanel;
 
-    [SerializeField] private float monologDuration;
-
     private DialogTrigger _currentDialogTrigger;
     private SubDialog _currentSubDialog;
 
@@ -36,7 +34,6 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (other.TryGetComponent(out DialogTrigger dialogTrigger))
         {
-            Debug.Log("on trig");
             _currentDialogTrigger = dialogTrigger;
             _currentSubDialog = _currentDialogTrigger.dialog.firstSubDialog;
             
@@ -46,7 +43,7 @@ public class PlayerInteraction : MonoBehaviour
 
             ActivateDialog();
             
-            Destroy(dialogTrigger);
+            Destroy(other.GetComponent<BoxCollider>());
         }
         else if (other.TryGetComponent(out MonologTrigger monologTrigger))
         {
@@ -56,8 +53,8 @@ public class PlayerInteraction : MonoBehaviour
                 pressKeyForInteractionPanel.Enable();
             
             ActivateDialog();
-
-            Destroy(monologTrigger);
+            
+            Destroy(other.GetComponent<BoxCollider>());
         }
         else if (other.TryGetComponent(out BirdController birdController))
         {
@@ -97,7 +94,8 @@ public class PlayerInteraction : MonoBehaviour
         else if (_currentSubDialog.firstSpeaker == Speaker.Evil)
         {
             playerDialogController.Deactivate();
-            if(_currentDialogTrigger != null) _currentDialogTrigger.Activate(_currentSubDialog);
+            Debug.Log(_currentDialogTrigger);
+            if (_currentDialogTrigger != null) _currentDialogTrigger.Activate(_currentSubDialog);
         }
 
         if (!IsNextDialogExist)
@@ -126,11 +124,21 @@ public class PlayerInteraction : MonoBehaviour
                 DeactivateDialog();
             }
             else
+            {
+                if (IsActionExist)
+                {
+                    if (_currentSubDialog.actions[0].actioner == DialogAction.Actioner.Caveman)
+                    {
+                        var actionMethodName = _currentSubDialog.actions[0].methodName;
+                        CavemanController.Instance.Invoke(actionMethodName, 0f);
+                    }
+                }
+                
                 SetNewSubDialog(0);
+            }
         }
         else if (IsActionExist)
         {
-
             if (_currentSubDialog.actions.Length > 0)
             {
                 var actionMethodName = _currentSubDialog.actions[0].methodName;
@@ -143,7 +151,12 @@ public class PlayerInteraction : MonoBehaviour
                 else if (_currentSubDialog.actions[0].actioner == DialogAction.Actioner.Caveman)
                 {
                     Debug.Log("actioner is caveman: " + actionMethodName);
+                    
+                    /* Set player and caveman movements*/
                     playerMovement.movementType = MovementType.Running;
+                    playerMovement.horizontalSpeed *= 2;
+                    playerMovement.verticalSpeed *= 2;
+                    
                     CavemanController.Instance.Invoke(actionMethodName, 0f);
                 }
             }

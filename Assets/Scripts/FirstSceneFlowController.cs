@@ -2,11 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design.Serialization;
+using DG.Tweening;
 using UnityEngine;
 
 public class FirstSceneFlowController : MonoBehaviour
 {
-    private GameObject player;
+    private GameObject _player;
     
     private PlayerAnimation _playerAnimation;
     private Rigidbody _playerRigidbody;
@@ -16,16 +17,18 @@ public class FirstSceneFlowController : MonoBehaviour
 
     private void Awake()
     {
-        player = GameObject.FindWithTag("Player");
+        _player = GameObject.FindWithTag("Player");
     }
 
     private void Start()
     { 
-        _playerAnimation = player.GetComponent<PlayerAnimation>();
-        _playerRigidbody = player.GetComponent<Rigidbody>();
+        _playerAnimation = _player.GetComponent<PlayerAnimation>();
+        _playerRigidbody = _player.GetComponent<Rigidbody>();
+
+        _player.transform.DOScale(Vector3.one, 2f).SetEase(Ease.OutElastic).SetDelay(1f);
         
         CameraManager.Instance.PortalPriority();
-        Invoke(nameof(StartFallingDownFromPortal), 2f);
+        Invoke(nameof(StartFallingDownFromPortal), 3f);
     }
 
     public void StartFallingDownFromPortal()

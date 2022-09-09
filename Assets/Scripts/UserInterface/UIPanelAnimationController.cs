@@ -51,6 +51,7 @@ public class UIPanelAnimationController : MonoBehaviour
                 _mySequence.Append(background.DOAnchorPosY(enableTarget.anchoredPosition.y, durationOnEnable).SetEase(easeTypeOnEnable).SetDelay(delayOnEnable));
                 break;
             case  AnimType.Scale:
+                if (uiPanelStatus == UIPanelStatus.Enabled) background.localScale = Vector3.zero; //_mySequence.Append(background.DOScale(Vector3.zero, durationOnDisable).SetEase(easeTypeOnDisable).SetDelay(delayOnDisable));
                 _mySequence.Append(background.DOScale(Vector3.one, durationOnEnable).SetEase(easeTypeOnEnable).SetDelay(delayOnEnable));
                 break;
             case AnimType.Color:

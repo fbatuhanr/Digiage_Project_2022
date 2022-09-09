@@ -23,7 +23,7 @@ public class ConversationUIController : MonoBehaviour
         transform.eulerAngles = Vector3.zero;
     }
     
-    private void FixedUpdate()
+    private void Update()
     {
         transform.eulerAngles = Vector3.zero;
     }

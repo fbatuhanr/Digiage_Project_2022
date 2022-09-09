@@ -16,10 +16,10 @@ public class PlayerMovement : MonoBehaviour
     public MovementType movementType;
     
     private Rigidbody _rigidbody;
-    
-    [Header("Movement Speed: ")]
-    [SerializeField] private float horizontalSpeed;
-    [SerializeField] private float verticalSpeed;
+
+    [Header("Movement Speed: ")] 
+    public float horizontalSpeed;
+    public float verticalSpeed;
 
     [SerializeField] private PlayerAnimation playerAnimation;
 
@@ -38,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
     
 
     private float HorizontalMovement => HorizontalInput * horizontalSpeed;
-    private float VerticalMovement => VerticalInput*verticalSpeed;
+    private float VerticalMovement => VerticalInput * verticalSpeed;
 
     private bool _isPlayerLocked;
 
