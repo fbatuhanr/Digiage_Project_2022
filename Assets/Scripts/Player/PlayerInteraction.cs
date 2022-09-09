@@ -44,21 +44,19 @@ public class PlayerInteraction : MonoBehaviour
             playerMovement.LockPlayer();
 
             ActivateDialog();
+            
+            Destroy(dialogTrigger);
         }
         else if (other.TryGetComponent(out MonologTrigger monologTrigger))
         {
-            /*if (monologTrigger.dialog)
-            {
-                _currentSubDialog = monologTrigger.dialog.firstSubDialog;
-                ActivateDialog();
-            }
-            else
-            {
-                NextDialog();
-            }*/
-            
             _currentSubDialog = monologTrigger.dialog.firstSubDialog;
+            
+            if(IsActionExist)
+                pressKeyForInteractionPanel.Enable();
+            
             ActivateDialog();
+
+            Destroy(monologTrigger);
         }
         else if (other.TryGetComponent(out BirdController birdController))
         {
@@ -104,7 +102,7 @@ public class PlayerInteraction : MonoBehaviour
         if (!IsNextDialogExist)
         {
             playerMovement.UnlockPlayer();
-            Invoke(nameof(DeactivateDialog), 3f);
+            // Invoke(nameof(DeactivateDialog), 3f);
         }
     }
 
@@ -126,21 +124,26 @@ public class PlayerInteraction : MonoBehaviour
                 pressKeyForInteractionPanel.Disable();
                 DeactivateDialog();
             }
-            else if (IsActionExist)
-            {
-                Debug.Log("action!");
-            }
-            else 
+            else
                 SetNewSubDialog(0);
         }
-        else
+        else if (IsActionExist)
+        {
+            var _methodName = _currentSubDialog.actions[0].methodName;
+            Debug.Log(_methodName);
+            playerAnimation.Invoke(_methodName, 0f);
+            
+            pressKeyForInteractionPanel.Disable();
+            DeactivateDialog();
+        }
+        else 
             DialogFinished();
     }
 
 
     public void SetNewSubDialog(int index)
     {
-        if (_currentSubDialog.nextDialogs[index])
+        if (_currentSubDialog.nextDialogs.Length > 0)
         {
             _currentSubDialog = _currentSubDialog.nextDialogs[index];
             ActivateDialog();

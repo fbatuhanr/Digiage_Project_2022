@@ -7,7 +7,23 @@ public class PlayerAnimation : MonoBehaviour
     public Animator _animator;
 
     [AnimatorParam("_animator")]
-    public int running, fallingDown, fallingToLanding, fallingIdle, jumpingUp, sadWalk, textingWhileStanding, yelling, wipingSweat, shrugging, laughing, standUp, pushing, disappointed, walking;
+    public int 
+        running, 
+        fallingDown, 
+        fallingToLanding, 
+        fallingIdle, 
+        jumpingUp, 
+        sadWalk, 
+        textingWhileStanding, 
+        yelling, 
+        wipingSweat, 
+        shrugging, 
+        laughing, 
+        standUp, 
+        pushing, 
+        disappointed, 
+        walking,
+        crouching;
 
     public void SetAnim(int anim, bool value=true, bool returnToBaseBeforeStart=true)
     {
@@ -27,5 +43,10 @@ public class PlayerAnimation : MonoBehaviour
             if (parameter.type == AnimatorControllerParameterType.Bool)
                 _animator.SetBool(parameter.name, false);
         }
+    }
+
+    public void Crouch()
+    {
+        SetAnim(crouching);
     }
 }
