@@ -9,7 +9,13 @@ public class Dialog : ScriptableObject
 
 [Serializable] public struct DialogAction
 {
-    public string content;
+    public enum Actioner
+    {
+        Player,
+        Caveman      
+    }
+
+    public Actioner actioner;
     public string methodName;
 }
 

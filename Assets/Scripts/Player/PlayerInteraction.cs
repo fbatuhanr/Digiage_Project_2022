@@ -36,6 +36,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (other.TryGetComponent(out DialogTrigger dialogTrigger))
         {
+            Debug.Log("on trig");
             _currentDialogTrigger = dialogTrigger;
             _currentSubDialog = _currentDialogTrigger.dialog.firstSubDialog;
             
@@ -129,9 +130,23 @@ public class PlayerInteraction : MonoBehaviour
         }
         else if (IsActionExist)
         {
-            var _methodName = _currentSubDialog.actions[0].methodName;
-            Debug.Log(_methodName);
-            playerAnimation.Invoke(_methodName, 0f);
+
+            if (_currentSubDialog.actions.Length > 0)
+            {
+                var actionMethodName = _currentSubDialog.actions[0].methodName;
+                
+                if (_currentSubDialog.actions[0].actioner == DialogAction.Actioner.Player)
+                {
+                    Debug.Log("actioner is player: " + actionMethodName);
+                    playerAnimation.Invoke(actionMethodName, 0f);
+                }
+                else if (_currentSubDialog.actions[0].actioner == DialogAction.Actioner.Caveman)
+                {
+                    Debug.Log("actioner is caveman: " + actionMethodName);
+                    playerMovement.movementType = MovementType.Running;
+                    CavemanController.Instance.Invoke(actionMethodName, 0f);
+                }
+            }
             
             pressKeyForInteractionPanel.Disable();
             DeactivateDialog();

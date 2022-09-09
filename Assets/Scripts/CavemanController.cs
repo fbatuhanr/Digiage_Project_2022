@@ -1,24 +1,37 @@
+using System;
 using NaughtyAttributes;
 using UnityEngine;
 
 public class CavemanController : MonoBehaviour
 {
-    
-    public Animator animator;
+    public static CavemanController Instance;
 
-    [AnimatorParam("animator")]
-    public int attackAnim;
+    private Animator _animator;
+
+    private bool isStartedToRunning;
 
     private void Start()
     {
-        animator = GetComponent<Animator>();
+        Instance = GetComponent<CavemanController>();
+
+        _animator = transform.GetChild(0).GetComponent<Animator>();
+        isStartedToRunning = false;
+    }
+
+    public void AttackAndRun()
+    {
+        _animator.SetTrigger("attack");
+        Invoke(nameof(StartToRunning), 1f);
+    }
+
+    private void StartToRunning()
+    {
+        isStartedToRunning = true;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            animator.SetTrigger(attackAnim);
-        }
+        if (isStartedToRunning)
+            transform.position += Vector3.right * (3 * Time.deltaTime);
     }
 }

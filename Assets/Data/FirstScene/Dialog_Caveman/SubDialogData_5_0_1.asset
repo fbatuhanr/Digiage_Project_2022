@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63b000e81aaa47a690c4107632d12d96, type: 3}
+  m_Name: SubDialogData_5_0_1
+  m_EditorClassIdentifier: 
+  firstSpeaker: 0
+  firstSentence: "SANIRIM \u0130\u015E\u0130M\u0130Z B\u0130RAZ ZOR "
+  answers: []
+  actions: []
+  nextDialogs:
+  - {fileID: 11400000, guid: 5a01be7a18608d54c9930d42b186b7cc, type: 2}
